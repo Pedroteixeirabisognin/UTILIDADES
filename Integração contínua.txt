@@ -1,0 +1,5 @@
+IC = INTEGRAÇÃO CONTINUA
+https://aws.amazon.com/pt/devops/continuous-integration/
+
+
+https://www.devmedia.com.br/integracao-continua-da-teoria-a-pratica/28284
