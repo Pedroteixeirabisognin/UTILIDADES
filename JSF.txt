@@ -1,0 +1,31 @@
+->Criando e configurando um projeto Web - JSF 2, Primefaces 3 e CDI
+https://www.devmedia.com.br/criando-e-configurando-um-projeto-web-jsf-2-primefaces-3-e-cdi/25251
+
+->Javascript no jsf
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      >
+    <h:head></h:head>
+    <h:body>
+    	
+    	<h1>JSF 2 outputScript example</h1>
+    	
+    	<h:outputScript library="js" name="common.js" />
+    	
+    </h:body>
+</html>
+
+->Ciclo de vida JSF
+https://www.tutorialspoint.com/jsf/jsf_life_cycle.htm
+
+
+->Managed Beans
+https://www.tutorialspoint.com/jsf/jsf_managed_beans.htm
+
+
+->Documentation
+https://www.tutorialspoint.com/jsf/jsf_tutorial.pdf
