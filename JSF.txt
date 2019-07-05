@@ -1,3 +1,6 @@
+->ADICIONANDO JSF AO SEUS PROJETOS
+https://www.devmedia.com.br/javaserver-faces/33272
+
 ->Criando e configurando um projeto Web - JSF 2, Primefaces 3 e CDI
 https://www.devmedia.com.br/criando-e-configurando-um-projeto-web-jsf-2-primefaces-3-e-cdi/25251
 

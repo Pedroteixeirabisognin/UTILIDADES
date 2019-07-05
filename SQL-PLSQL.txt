@@ -1,0 +1,3 @@
+-> TRIGGERS
+https://www.devmedia.com.br/desenvolvendo-triggers-em-sql-server-oracle-firebird-e-postgres/5625
+
