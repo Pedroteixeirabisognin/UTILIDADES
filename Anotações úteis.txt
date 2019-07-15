@@ -1,0 +1,16 @@
+
+
+Indica que é um endpoint->	@WebMethod
+Indica o nome do endpoint->	@WebResult(name="incluirSinistroSAP")
+
+
+
+Exemplo de uso: 
+//String Builder é mais rápido que o String para concatenar strings
+StringBuilder sb = new StringBuilder();
+sb.append("SELECT DISTINCT top 1000 xxx ");
+
+
+Exemplo de uso:
+MapSqlParameterSource param = new MapSqlParameterSource();
+param.addValue("numProtocolo", filtro.getNumProtocolo());
