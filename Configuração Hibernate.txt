@@ -1,0 +1,280 @@
+Adicionar as dependencias abaixo do hibernate:
+
+ <dependencies>
+       <dependency>
+           <groupId>org.hibernate</groupId>
+           <artifactId>hibernate-core</artifactId>
+           <version>5.2.12.Final</version>
+       </dependency>
+
+       <dependency>
+           <groupId>mysql</groupId>
+           <artifactId>mysql-connector-java</artifactId>
+           <version>5.1.38</version>
+       </dependency>
+   </dependencies>
+   
+
+Com o Hibernate e a JPA adicionados ao projeto, analisemos, agora como configurá-los. 
+Quando optamos pela JPA, devemos fazer isso no arquivo persistence.xml, o qual deve ser 
+criado dentro da pasta resources/META-INF. 
+
+Nele, como configuração base, podemos adicionar o seguinte código:   
+
+ <persistence xmlns="http://java.sun.com/xml/ns/persistence"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+      http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+      version="2.0">
+ 
+    <persistence-unit name="introducao-jpa"
+           transaction-type="RESOURCE_LOCAL">
+ 
+        <properties>
+            <!-- Driver JDBC para conexão com o MySQL -->
+            <property name="javax.persistence.jdbc.driver"
+                   value="com.mysql.jdbc.Driver" />
+ 
+            <!-- Propriedades para conexão com o banco de dados -->
+            <property name="javax.persistence.jdbc.url"
+                   value="jdbc:mysql://localhost:3306/dbIntroJPA?
+                   createDatabaseIfNotExist=true"/>
+            <property name="javax.persistence.jdbc.user"
+                   value="root"/>
+            <property name="javax.persistence.jdbc.password"
+                   value="123456"/>
+ 
+            <!-- Configurações do Hibernate -->
+            <property name="hibernate.dialect"
+                  value="org.hibernate.dialect.MySQL5Dialect"/>
+ 
+            <!-- Atualiza o banco de dados, criando as 
+                   tabelas caso necessário -->
+            <property name="hibernate.hbm2ddl.auto"
+                   value="update"/>
+        </properties>
+    </persistence-unit>
+	
+ </persistence>
+ 
+ Após isso criar a classe modelo ex:
+ 
+ @Entity
+ public class Pessoa {
+ 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+ 
+    private String nome;
+    private int idade;
+ 
+    public Pessoa() {
+    }
+
+    public Pessoa(String nome, int idade) {
+        this.nome = nome;
+        this.idade = idade;
+    }
+ 
+    public long getId() {
+        return id;
+    }
+ 
+    public void setId(long id) {
+        this.id = id;
+    }
+ 
+    public String getNome() {
+        return nome;
+    }
+ 
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+ 
+    public int getIdade() {
+        return idade;
+    }
+ 
+    public void setIdade(int idade) {
+        this.idade = idade;
+    }
+ 
+    @Override
+    public String toString() {
+        return "Pessoa{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", idade=" + idade +
+                '}';
+    }
+ }
+ 
+ 
+ ////////Exemplo de chamada do jpa:
+ 
+ public class Programa {
+ 
+    public static void main(String args[]) {
+        Pessoa pessoa1 = new Pessoa("Eduardo", 33);
+        Pessoa pessoa2 = new Pessoa("Gustavo", 34);
+ 
+        EntityManager em = Persistence.createEntityManagerFactory
+              ("introducao-jpa").createEntityManager();
+ 
+        System.out.println("Persistindo duas pessoas 
+              no banco de dados:");
+        em.getTransaction().begin();
+        em.persist(pessoa1);
+        em.persist(pessoa2);
+        em.getTransaction().commit();
+ 
+        System.out.println("Recuperando as pessoas 
+              cadastradas do banco de dados:");
+        List<Pessoa> pessoas = em.createQuery
+              ("select p from Pessoa p", Pessoa.class).getResultList();
+        System.out.println(pessoas);
+        em.close();
+    }
+ 
+ }
+ 
+ 
+ ////////Exemplo de getAll:
+ 
+ public static void main(String args[]) {
+   entityManagerFactory = Persistence.createEntityManagerFactory("hibernatejpa");
+
+   List<Lembrete> lembretes = null;
+        
+   EntityManager em = entityManagerFactory.createEntityManager();
+        
+   try {
+    lembretes = em.createQuery("from Lembrete").getResultList();
+   } catch (Exception e) {
+    System.out.println("LIST ALL: " + e.getMessage());
+   } finally {
+    em.close();
+   }
+        
+   if (lembretes != null) {
+    lembretes.forEach(System.out::println);
+   }
+  }
+  
+  
+ ////////Exemplo de findById:
+  
+   public class Main {
+
+   private static EntityManagerFactory entityManagerFactory;
+
+   public static void main(String args[]) {
+
+    entityManagerFactory = Persistence.createEntityManagerFactory("hibernatejpa");
+
+     EntityManager em = entityManagerFactory.createEntityManager();
+        
+     try {
+    lembrete = em.find(Lembrete.class, 1L);
+     } finally {
+       em.close();
+     }
+        
+     System.out.println(lembrete);
+   }
+ }
+ 
+ 
+ ////////Busca por titulo:
+ 
+ 
+ public class Main {
+
+   private static EntityManagerFactory entityManagerFactory;
+
+   public static void main(String args[]) {
+
+     entityManagerFactory = Persistence.createEntityManagerFactory("hibernatejpa");
+
+     List<Lembrete> lembretes = null;
+        
+     EntityManager em = entityManagerFactory.createEntityManager();
+        
+     try {
+       lembretes = em.createQuery("from Lembrete l where l.titulo LIKE '%comprar%'").getResultList();
+     } catch (Exception e) {
+       System.out.println("LIST ALL: " + e.getMessage());
+     } finally {
+       em.close();
+     }
+        
+     if (lembretes != null) {
+       lembretes.forEach(System.out::println);
+     }
+   }
+ }
+ 
+ ////////Exemplo de update:
+ 
+  public class Main {
+   private static EntityManagerFactory entityManagerFactory;
+
+   public static void main(String args[]) {
+     entityManagerFactory = Persistence.createEntityManagerFactory("hibernatejpa");
+
+     EntityManager em = entityManagerFactory.createEntityManager();
+        
+     try {
+       lembrete = em.find(Lembrete.class, 1L);
+        
+       lembrete.setTitulo("Comprar café");
+       lembrete.setDescricao("Hoje, 8h22");
+        
+       em.getTransaction().begin();
+       em.merge(lembrete);
+       em.getTransaction().commit();
+     } catch (Exception e) {
+       em.getTransaction().rollback();
+        
+       System.out.println("UPDATE: " + e.getMessage());
+     } finally {
+      em.close();
+    }
+   }
+ }
+ 
+ ////////Exemplo de deleteById:
+ 
+  package br.com.devmedia.java.primeiraapphibernatejpa;
+
+ import javax.persistence.EntityManager;
+ import javax.persistence.EntityManagerFactory;
+ import javax.persistence.Persistence;
+ import java.util.List;
+
+ public class Main {
+
+     private static EntityManagerFactory entityManagerFactory;
+
+     public static void main(String args[]) {
+
+         entityManagerFactory = Persistence.createEntityManagerFactory("hibernatejpa");
+
+         EntityManager em = entityManagerFactory.createEntityManager();
+        
+         try {
+            em.getTransaction().begin();
+            lembrete = em.find(Lembrete.class, 1l);
+            em.remove(lembrete);
+            em.getTransaction().commit();
+         } catch (Exception e) {
+            em.getTransaction().rollback();
+        
+            System.out.println("DELETE: " + e.getMessage());
+         } finally {
+            em.close();
+         }
+     }
+ }
